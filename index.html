@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#0f172a">
+<title>سفر آرمان به چهار سرزمین</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#0b1120;
+    --bg2:#1e293b;
+    --card:rgba(255,255,255,0.05);
+    --border:rgba(255,255,255,0.12);
+    --text:#e2e8f0;
+    --muted:#94a3b8;
+    --accent:#38bdf8;
+    --accent2:#facc15;
+    --shadow:rgba(0,0,0,0.55);
+    --glow:rgba(56,189,248,0.35);
+  }
+  body.light{
+    --bg1:#eef4ff;
+    --bg2:#ffffff;
+    --card:rgba(255,255,255,0.75);
+    --border:rgba(15,23,42,0.08);
+    --text:#0f172a;
+    --muted:#475569;
+    --accent:#0284c7;
+    --accent2:#d97706;
+    --shadow:rgba(15,23,42,0.15);
+    --glow:rgba(2,132,199,0.25);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Vazirmatn',system-ui,sans-serif;
+    background:linear-gradient(135deg,var(--bg1),var(--bg2));
+    color:var(--text);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:24px 14px 60px;
+    line-height:2;
+    transition:background .6s ease, color .6s ease;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* ستاره‌های پس‌زمینه (فقط شب) */
+  .stars{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    opacity:1;
+    transition:opacity .8s ease;
+    background-image:
+      radial-gradient(1.5px 1.5px at 20% 30%, #fff, transparent),
+      radial-gradient(1px 1px at 70% 20%, #cbd5e1, transparent),
+      radial-gradient(1.5px 1.5px at 40% 70%, #fff, transparent),
+      radial-gradient(1px 1px at 85% 60%, #94a3b8, transparent),
+      radial-gradient(1.2px 1.2px at 10% 85%, #e2e8f0, transparent),
+      radial-gradient(1px 1px at 55% 45%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 90% 90%, #cbd5e1, transparent);
+    animation:twinkle 6s ease-in-out infinite alternate;
+  }
+  body.light .stars{opacity:0;}
+  @keyframes twinkle{from{opacity:.5;}to{opacity:1;}}
+
+  .card{
+    position:relative;
+    z-index:1;
+    max-width:760px;
+    width:100%;
+    background:var(--card);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border:1px solid var(--border);
+    border-radius:26px;
+    padding:34px 22px 40px;
+    box-shadow:0 25px 70px var(--shadow);
+    animation:fadeUp .9s cubic-bezier(.2,.8,.2,1);
+    transition:background .6s ease,border .6s ease,box-shadow .6s ease;
+  }
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(40px) scale(.98);}
+    to{opacity:1;transform:translateY(0) scale(1);}
+  }
+
+  /* دکمه تم */
+  .theme-btn{
+    position:fixed;
+    top:16px;
+    left:16px;
+    z-index:10;
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:var(--card);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    cursor:pointer;
+    font-size:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 8px 24px var(--shadow);
+    transition:transform .3s ease, background .5s ease;
+  }
+  .theme-btn:active{transform:scale(.88) rotate(20deg);}
+
+  h1{
+    font-size:clamp(1.5rem,5vw,2.2rem);
+    font-weight:900;
+    text-align:center;
+    background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent));
+    background-size:200% auto;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    margin-bottom:8px;
+    animation:shine 5s linear infinite;
+    line-height:1.5;
+  }
+  @keyframes shine{to{background-position:200% center;}}
+
+  .subtitle{
+    text-align:center;
+    font-size:.85rem;
+    color:var(--muted);
+    margin-bottom:26px;
+    letter-spacing:.3px;
+  }
+
+  .divider{
+    height:2px;
+    width:70px;
+    margin:0 auto 28px;
+    border-radius:2px;
+    background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  }
+
+  p.txt{
+    font-size:clamp(.95rem,3.6vw,1.08rem);
+    font-weight:300;
+    margin-bottom:16px;
+    padding:14px 16px;
+    border-radius:14px;
+    border-right:3px solid transparent;
+    background:transparent;
+    transition:all .35s ease;
+  }
+  p.txt:active,p.txt:hover{
+    border-right-color:var(--accent);
+    background:rgba(56,189,248,0.08);
+    transform:translateX(-4px);
+  }
+
+  .highlight{
+    color:var(--accent2);
+    font-weight:700;
+  }
+
+  /* باکس آرزوها */
+  .dreams{
+    margin:24px 0;
+    padding:22px 16px;
+    border-radius:18px;
+    background:linear-gradient(135deg,rgba(56,189,248,0.12),rgba(250,204,21,0.08));
+    border:1px dashed var(--glow);
+    position:relative;
+    overflow:hidden;
+  }
+  .dreams::before{
+    content:"";
+    position:absolute;
+    inset:-50%;
+    background:conic-gradient(from 0deg,transparent,var(--glow),transparent 30%);
+    animation:rotate 8s linear infinite;
+    z-index:-1;
+    opacity:.4;
+  }
+  @keyframes rotate{to{transform:rotate(360deg);}}
+  .dreams p{
+    text-align:center;
+    font-weight:500;
+    font-size:.95rem;
+    margin-bottom:14px;
+  }
+  .dreams ul{
+    list-style:none;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+  }
+  .dreams li{
+    background:var(--card);
+    border:1px solid var(--glow);
+    padding:12px 8px;
+    border-radius:14px;
+    font-weight:500;
+    font-size:.9rem;
+    text-align:center;
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .dreams li:active{
+    transform:scale(.95);
+    box-shadow:0 0 20px var(--glow);
+  }
+
+  .quote{
+    text-align:center;
+    font-size:clamp(1rem,3.8vw,1.15rem);
+    font-weight:700;
+    color:var(--accent);
+    margin:32px 0 10px;
+    padding:20px 14px;
+    border-radius:16px;
+    background:linear-gradient(135deg,rgba(56,189,248,0.1),transparent);
+    border:1px solid var(--glow);
+    line-height:1.9;
+  }
+
+  footer{
+    text-align:center;
+    margin-top:26px;
+    font-size:.78rem;
+    color:var(--muted);
+    opacity:.85;
+  }
+
+  /* اسکرول‌بار */
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px;}
+
+  /* گوشی‌های کوچک */
+  @media (max-width:380px){
+    .card{padding:26px 16px 34px;}
+    .dreams ul{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <button class="theme-btn" id="themeBtn" aria-label="تغییر تم">🌙</button>
+
+  <div class="card">
+    <h1>سفر آرمان به چهار سرزمین</h1>
+    <p class="subtitle">داستانی خیال‌انگیز درباره همدلی، امید و صلح ✨</p>
+    <div class="divider"></div>
+
+    <p class="txt">آرمان در خانه مشغول تماشای اخبار است. خبرهای مربوط به چهار سرزمین — <span class="highlight">فلسطین، لبنان، عراق و یمن</span> — او را ناراحت و نگران می‌کند.</p>
+
+    <p class="txt">پدربزرگ بهرام نقشه‌ای باستانی و زنده را آشکار می‌کند.</p>
+
+    <p class="txt">این نقشه دارای چهار دروازه جادویی است.</p>
+
+    <p class="txt">آرمان و پدربزرگ از طریق این دروازه‌ها وارد چهار سرزمین می‌شوند.</p>
+
+    <p class="txt">هر سرزمین، چالشی ویژه، نمادی خاص و تجربه‌ای متفاوت برای آن‌ها به همراه دارد.</p>
+
+    <div class="dreams">
+      <p>در پایان، آرمان درمی‌یابد که مردم این چهار سرزمین، با وجود تفاوت‌هایشان، چهار آرزوی مشترک دارند:</p>
+      <ul>
+        <li>🕊️ صلح</li>
+        <li>🛡️ امنیت</li>
+        <li>📚 آموزش</li>
+        <li>🌅 آینده‌ای بهتر</li>
+      </ul>
+    </div>
+
+    <p class="txt">این داستان درباره سفر خیال‌انگیز آرمان به چهار سرزمین فلسطین، لبنان، عراق و یمن است؛ سفری که او را با رنج‌ها، چالش‌ها و آرزوهای مشترک مردم این سرزمین‌ها آشنا می‌کند.</p>
+
+    <p class="txt">آرمان در این سفر درمی‌یابد که فراتر از مرزها و تفاوت‌ها، همه مردم خواهان صلح، امنیت، آموزش و آینده‌ای روشن‌تر هستند.</p>
+
+    <p class="quote">«صلح‌طلبی، همدلی با مردم سرزمین‌های آسیب‌دیده و امید به ساختن آینده‌ای بهتر»</p>
+
+    <footer>ساخته‌شده با ❤️ برای روایت داستان‌های امید</footer>
+  </div>
+
+<script>
+  const btn = document.getElementById('themeBtn');
+  const body = document.body;
+  const saved = localStorage.getItem('theme');
+
+  // اگر قبلاً انتخاب کرده بود
+  if (saved === 'light') {
+    body.classList.add('light');
+    btn.textContent = '☀️';
+  } else {
+    btn.textContent = '🌙';
+  }
+
+  // تشخیص خودکار بر اساس ساعت روز
+  if (!saved) {
+    const h = new Date().getHours();
+    if (h >= 6 && h < 18) {
+      body.classList.add('light');
+      btn.textContent = '☀️';
+    }
+  }
+
+  btn.addEventListener('click', () => {
+    body.classList.toggle('light');
+    const isLight = body.classList.contains('light');
+    btn.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  });
+</script>
+</body>
+</html>
